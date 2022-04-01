@@ -6,11 +6,9 @@ import 'package:weather_api/src/models/json_map.dart';
 
 part 'weather.g.dart';
 
-
 @immutable
 @JsonSerializable()
 class Weather extends Equatable {
-  
   Weather({
     this.consolidatedWeather = const [],
     this.time,
@@ -67,9 +65,20 @@ class Weather extends Equatable {
   /// Deserializes the given [JsonMap] into a [Weather].
   static Weather fromJson(JsonMap json) => _$WeatherFromJson(json);
 
-  /// Converts this [Todo] into a [JsonMap].
+  /// Converts this [Weather] into a [JsonMap].
   JsonMap toJson() => _$WeatherToJson(this);
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [
+        consolidatedWeather,
+        time,
+        sunRise,
+        sunSet,
+        timezoneName,
+        title,
+        locationType,
+        woeid,
+        lattLong,
+        timezone,
+      ];
 }

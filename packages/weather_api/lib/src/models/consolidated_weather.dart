@@ -8,39 +8,39 @@ part 'consolidated_weather.g.dart';
 @immutable
 @JsonSerializable()
 class ConsolidatedWeather extends Equatable {
-    ConsolidatedWeather({
-        this.id,
-        this.weatherStateName = '',
-        this.weatherStateAbbr = '',
-        this.windDirectionCompass = '',
-        this.created,
-        this.applicableDate,
-        this.minTemp = 0,
-        this.maxTemp = 0,
-        this.theTemp = 0,
-        this.windSpeed = 0,
-        this.windDirection = 0,
-        this.airPressure = 0,
-        this.humidity = 0,
-        this.visibility = 0,
-        this.predictability = 0,
-    });
+  ConsolidatedWeather({
+    this.id,
+    this.weatherStateName = '',
+    this.weatherStateAbbr = '',
+    this.windDirectionCompass = '',
+    this.created,
+    this.applicableDate,
+    this.minTemp = 0,
+    this.maxTemp = 0,
+    this.theTemp = 0,
+    this.windSpeed = 0,
+    this.windDirection = 0,
+    this.airPressure = 0,
+    this.humidity = 0,
+    this.visibility = 0,
+    this.predictability = 0,
+  });
 
-    int? id;
-    String weatherStateName;
-    String weatherStateAbbr;
-    String windDirectionCompass;
-    DateTime? created;
-    DateTime? applicableDate;
-    double minTemp;
-    double maxTemp;
-    double theTemp;
-    double windSpeed;
-    double windDirection;
-    double airPressure;
-    int humidity;
-    double visibility;
-    int predictability;
+  final int? id;
+  final String weatherStateName;
+  final String weatherStateAbbr;
+  final String windDirectionCompass;
+  final DateTime? created;
+  final DateTime? applicableDate;
+  final double minTemp;
+  final double maxTemp;
+  final double theTemp;
+  final double windSpeed;
+  final double windDirection;
+  final double airPressure;
+  final int humidity;
+  final double visibility;
+  final int predictability;
 
   /// Returns a copy of this todo with the given values updated.
   ///
@@ -82,13 +82,30 @@ class ConsolidatedWeather extends Equatable {
     );
   }
 
-  /// Deserializes the given [JsonMap] into a [Weather].
-  static ConsolidatedWeather fromJson(JsonMap json) => _$ConsolidatedWeatherFromJson(json);
+  /// Deserializes the given [JsonMap] into a [ConsolidatedWeather].
+  static ConsolidatedWeather fromJson(JsonMap json) =>
+      _$ConsolidatedWeatherFromJson(json);
 
-  /// Converts this [Todo] into a [JsonMap].
+  /// Converts this [ConsolidatedWeather] into a [JsonMap].
   JsonMap toJson() => _$ConsolidatedWeatherToJson(this);
 
   @override
-  List<Object?> get props => [];
-
+  List<Object?> get props => [
+        id,
+        weatherStateName,
+        weatherStateAbbr,
+        windDirection,
+        windDirectionCompass,
+        created,
+        applicableDate,
+        minTemp,
+        maxTemp,
+        theTemp,
+        windSpeed,
+        windDirection,
+        airPressure,
+        humidity,
+        visibility,
+        predictability,
+      ];
 }
