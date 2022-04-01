@@ -1,84 +1,87 @@
-import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:meta/meta.dart';
-import 'package:weather_api/src/models/consolidated_weather.dart';
-import 'package:weather_api/src/models/json_map.dart';
 
 part 'weather.g.dart';
 
-@immutable
+enum WeatherState {
+  @JsonValue('sn')
+  snow,
+  @JsonValue('sl')
+  sleet,
+  @JsonValue('h')
+  hail,
+  @JsonValue('t')
+  thunderstorm,
+  @JsonValue('hr')
+  heavyRain,
+  @JsonValue('lr')
+  lightRain,
+  @JsonValue('s')
+  showers,
+  @JsonValue('hc')
+  heavyCloud,
+  @JsonValue('lc')
+  lightCloud,
+  @JsonValue('c')
+  clear,
+  unmarked,
+}
+
+enum WindDirectionCompass {
+  @JsonValue('N')
+  north,
+  @JsonValue('NE')
+  northEast,
+  @JsonValue('E')
+  east,
+  @JsonValue('SE')
+  southEast,
+  @JsonValue('S')
+  south,
+  @JsonValue('SW')
+  southWest,
+  @JsonValue('W')
+  west,
+  @JsonValue('NW')
+  northWest,
+  unmarked
+}
+
 @JsonSerializable()
-class Weather extends Equatable {
-  Weather({
-    this.consolidatedWeather = const [],
-    this.time,
-    this.sunRise,
-    this.sunSet,
-    this.timezoneName = '',
-    this.title = '',
-    this.locationType = '',
-    this.woeid,
-    this.lattLong = '',
-    this.timezone = '',
+class Weather {
+  const Weather({
+    required this.id,
+    required this.weatherStateName,
+    required this.weatherStateAbbr,
+    required this.windDirectionCompass,
+    required this.created,
+    required this.applicableDate,
+    required this.minTemp,
+    required this.maxTemp,
+    required this.theTemp,
+    required this.windSpeed,
+    required this.windDirection,
+    required this.airPressure,
+    required this.humidity,
+    required this.visibility,
+    required this.predictability,
   });
 
-  final List<ConsolidatedWeather> consolidatedWeather;
-  final DateTime? time;
-  final DateTime? sunRise;
-  final DateTime? sunSet;
-  final String timezoneName;
-  final String title;
-  final String locationType;
-  final int? woeid;
-  final String lattLong;
-  final String timezone;
+  final int id;
+  final String weatherStateName;
+  final WeatherState weatherStateAbbr;
+  final WindDirectionCompass windDirectionCompass;
+  final DateTime created;
+  final DateTime applicableDate;
+  final double minTemp;
+  final double maxTemp;
+  final double theTemp;
+  final double windSpeed;
+  final double windDirection;
+  final double airPressure;
+  final int humidity;
+  final double visibility;
+  final int predictability;
 
-  /// Returns a copy of this todo with the given values updated.
-  ///
-  /// {@macro todo}
-  Weather copyWith({
-    List<ConsolidatedWeather>? consolidatedWeather,
-    DateTime? time,
-    DateTime? sunRise,
-    DateTime? sunSet,
-    String? timezoneName,
-    String? title,
-    String? locationType,
-    int? woeid,
-    String? lattLong,
-    String? timezone,
-  }) {
-    return Weather(
-      consolidatedWeather: consolidatedWeather ?? this.consolidatedWeather,
-      time: time ?? this.time,
-      sunRise: sunRise ?? this.sunRise,
-      sunSet: sunSet ?? this.sunSet,
-      timezoneName: timezoneName ?? this.timezoneName,
-      title: title ?? this.title,
-      locationType: locationType ?? this.locationType,
-      woeid: woeid ?? this.woeid,
-      lattLong: lattLong ?? this.lattLong,
-      timezone: timezone ?? this.timezone,
-    );
-  }
-
-  /// Deserializes the given [JsonMap] into a [Weather].
-  static Weather fromJson(JsonMap json) => _$WeatherFromJson(json);
-
-  /// Converts this [Weather] into a [JsonMap].
-  JsonMap toJson() => _$WeatherToJson(this);
-
-  @override
-  List<Object?> get props => [
-        consolidatedWeather,
-        time,
-        sunRise,
-        sunSet,
-        timezoneName,
-        title,
-        locationType,
-        woeid,
-        lattLong,
-        timezone,
-      ];
+  factory Weather.fromJson(Map<String, dynamic> json) =>
+      _$WeatherFromJson(json);
 }
