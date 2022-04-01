@@ -1,17 +1,25 @@
-// Copyright (c) 2022, Very Good Ventures
-// https://verygood.ventures
-//
-// Use of this source code is governed by an MIT-style
-// license that can be found in the LICENSE file or at
-// https://opensource.org/licenses/MIT.
-
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:weather_app/counter/counter.dart';
+import 'package:weather_app/app/features/home/view/home_page.dart';
 import 'package:weather_app/l10n/l10n.dart';
+import 'package:weather_repository/weather_repository.dart';
 
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return RepositoryProvider<WeatherRepository>.value(
+      value: WeatherRepository(),
+      // create: (context) => WeatherRepository(),
+      child: const AppView(),
+    );
+  }
+}
+
+class AppView extends StatelessWidget {
+  const AppView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +35,7 @@ class App extends StatelessWidget {
         GlobalMaterialLocalizations.delegate,
       ],
       supportedLocales: AppLocalizations.supportedLocales,
-      home: const CounterPage(),
+      home: const HomePage(),
     );
   }
 }

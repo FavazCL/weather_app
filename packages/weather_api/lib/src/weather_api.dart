@@ -54,13 +54,13 @@ class WeatherApi {
       throw WeatherRequestFailure();
     }
 
-    final weatherJson = bodyJson['consolidated_weather'] as List;
+    // final weatherJson = bodyJson['consolidated_weather'] as List;
 
-    if (weatherJson.isEmpty) {
-      throw WeatherRequestFailure();
-    }
+    // if (weatherJson.isEmpty) {
+      // throw WeatherRequestFailure();
+    // }
 
-    return Weather.fromJson(weatherJson.first as Map<String, dynamic>);
+    return Weather.fromJson(bodyJson);
   }
 }
 

@@ -29,6 +29,7 @@ class Location {
   });
 
   final String title;
+  @JsonKey(name: 'location_type')
   final LocationType locationType;
   @JsonKey(name: 'latt_long')
   @LatLngConverter()

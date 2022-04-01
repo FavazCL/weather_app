@@ -8,14 +8,14 @@ part of 'location.dart';
 
 Location _$LocationFromJson(Map<String, dynamic> json) => Location(
       title: json['title'] as String,
-      locationType: $enumDecode(_$LocationTypeEnumMap, json['locationType']),
+      locationType: $enumDecode(_$LocationTypeEnumMap, json['location_type']),
       latLng: const LatLngConverter().fromJson(json['latt_long'] as String),
       woeid: json['woeid'] as int,
     );
 
 Map<String, dynamic> _$LocationToJson(Location instance) => <String, dynamic>{
       'title': instance.title,
-      'locationType': _$LocationTypeEnumMap[instance.locationType],
+      'location_type': _$LocationTypeEnumMap[instance.locationType],
       'latt_long': const LatLngConverter().toJson(instance.latLng),
       'woeid': instance.woeid,
     };
