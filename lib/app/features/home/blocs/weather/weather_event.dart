@@ -18,3 +18,7 @@ class WeatherRequested extends WeatherEvent {
   @override
   List<Object> get props => [location];
 }
+
+class UnitChanged extends WeatherEvent {
+  const UnitChanged();
+}
