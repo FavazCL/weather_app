@@ -14,6 +14,7 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
         super(const WeatherState()) {
     on<WeatherRequested>(_onWeatherRequested);
     on<UnitChanged>(_onUnitChanged);
+    on<CurrentWeatherChanged>(_onCurrentWeatherChanged);
   }
 
   final WeatherRepository _weatherRepository;
@@ -44,6 +45,38 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
     UnitChanged event,
     Emitter<WeatherState> emit,
   ) async {
-    emit(state.copyWith(isCelsius: !state.isCelsius));
+    final consolidatedWeather = state.weather!.consolidatedWeather.map((e) {
+      e.maxTemp =
+          (state.isCelsius) ? toCelsius(e.maxTemp) : toFahrenheit(e.maxTemp);
+      e.minTemp =
+          (state.isCelsius) ? toCelsius(e.maxTemp) : toFahrenheit(e.maxTemp);
+      e.theTemp =
+          (state.isCelsius) ? toCelsius(e.maxTemp) : toFahrenheit(e.maxTemp);
+      return e;
+    }).toList();
+
+    final weather = state.weather;
+    weather!.consolidatedWeather = consolidatedWeather;
+
+    emit(
+      state.copyWith(
+        isCelsius: !state.isCelsius,
+        weather: weather,
+        currentConsolidated: weather.consolidatedWeather.first,
+      ),
+    );
+  }
+
+  double toFahrenheit(double temp) => (temp * 9 / 5) + 32;
+  double toCelsius(double temp) => (temp - 32) * 5 / 9;
+
+  Future<void> _onCurrentWeatherChanged(
+    CurrentWeatherChanged event,
+    Emitter<WeatherState> emit,
+  ) async {
+    final currentWeather = state.weather!.consolidatedWeather
+        .firstWhere((weather) => weather.id == event.id);
+
+    emit(state.copyWith(currentConsolidated: currentWeather));
   }
 }

@@ -22,3 +22,14 @@ class WeatherRequested extends WeatherEvent {
 class UnitChanged extends WeatherEvent {
   const UnitChanged();
 }
+
+class CurrentWeatherChanged extends WeatherEvent {
+    const CurrentWeatherChanged(
+    this.id,
+  );
+
+  final int id;
+
+  @override
+  List<Object> get props => [id];
+}

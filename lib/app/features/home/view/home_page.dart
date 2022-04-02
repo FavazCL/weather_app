@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ui_kit/ui_kit.dart';
+import 'package:utils/utils.dart';
+import 'package:weather_api/weather_api.dart' show ConsolidatedWeather;
 import 'package:weather_app/app/features/home/blocs/weather/weather_bloc.dart';
 import 'package:weather_app/app/features/home/cubits/search/search_cubit.dart';
 import 'package:weather_app/app/features/home/view/input_search.dart';
@@ -14,9 +16,12 @@ class HomePage extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-            create: (context) => WeatherBloc(
-                  weatherRepository: context.read<WeatherRepository>(),
-                )..add(const WeatherRequested('london'))),
+          create: (context) => WeatherBloc(
+            weatherRepository: context.read<WeatherRepository>(),
+          )..add(
+              const WeatherRequested('berlin'),
+            ),
+        ),
         BlocProvider(
           create: (context) => SearchCubit(),
         ),
@@ -69,14 +74,27 @@ class WeatherView extends StatelessWidget {
                       ],
                     ),
                   ),
+                  const SizedBox(height: 20),
                   Header(
                     date: state.currentConsolidated!.applicableDate,
                     location: state.weather!.title,
+                    temperature: state.currentConsolidated!.theTemp,
+                    isCelsius: state.isCelsius,
                   ),
-                  const SizedBox(height: 20),
-                  const Details(),
-                  const SizedBox(height: 20),
-                  const Expanded(child: Footer()),
+                  AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 300),
+                    child: Details(
+                      key: ValueKey(state.currentConsolidated!.id),
+                      consolidatedWeather: state.currentConsolidated!,
+                    ),
+                  ),
+                  const SizedBox(height: 40),
+                  Expanded(
+                    flex: 2,
+                    child: Footer(
+                      weathers: state.weather!.consolidatedWeather,
+                    ),
+                  ),
                 ],
               ),
             );
@@ -94,17 +112,21 @@ class Header extends StatelessWidget {
     Key? key,
     required this.location,
     required this.date,
+    required this.temperature,
+    required this.isCelsius,
   }) : super(key: key);
 
   final String location;
   final DateTime date;
+  final double temperature;
+  final bool isCelsius;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Text(
-          date.toString(),
+          FormatDate.getDayOfWeek(date),
           style: const TextStyle(fontSize: 16, color: Palette.grey),
         ),
         const SizedBox(height: 5),
@@ -115,6 +137,15 @@ class Header extends StatelessWidget {
             color: Palette.black,
             fontWeight: FontWeight.bold,
           ),
+        ),
+        const SizedBox(height: 5),
+        Text(
+          '${temperature.toInt()} ${isCelsius ? '°C' : '°F'}',
+          style: const TextStyle(
+            fontSize: 24,
+            color: Palette.black,
+            fontWeight: FontWeight.bold,
+          ),
         )
       ],
     );
@@ -122,27 +153,53 @@ class Header extends StatelessWidget {
 }
 
 class Details extends StatelessWidget {
-  const Details({Key? key}) : super(key: key);
+  const Details({Key? key, required this.consolidatedWeather})
+      : super(key: key);
+
+  final ConsolidatedWeather consolidatedWeather;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        FlutterLogo(size: 200),
-        const SizedBox(height: 10),
+        const SizedBox(height: 40),
+        const FlutterLogo(size: 200),
+        const SizedBox(height: 40),
         Text(
-          'Cloudy',
-          style: TextStyle(
-              fontSize: 40, color: Palette.black, fontWeight: FontWeight.bold),
+          consolidatedWeather.weatherStateName,
+          style: const TextStyle(
+            fontSize: 40,
+            color: Palette.black,
+            fontWeight: FontWeight.bold,
+          ),
         ),
-        const SizedBox(height: 10),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            DetailsItem(),
-            DetailsItem(),
-            DetailsItem(),
-          ],
+        const SizedBox(height: 40),
+        IntrinsicHeight(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              DetailsItem(
+                title: 'Humidity',
+                value: consolidatedWeather.humidity,
+              ),
+              VerticalDivider(
+                color: Palette.black.withOpacity(0.2),
+                thickness: 1,
+              ),
+              DetailsItem(
+                title: 'Pressure',
+                value: consolidatedWeather.airPressure,
+              ),
+              VerticalDivider(
+                color: Palette.black.withOpacity(0.2),
+                thickness: 1,
+              ),
+              DetailsItem(
+                title: 'Wind',
+                value: consolidatedWeather.windSpeed,
+              ),
+            ],
+          ),
         )
       ],
     );
@@ -150,21 +207,31 @@ class Details extends StatelessWidget {
 }
 
 class DetailsItem extends StatelessWidget {
-  const DetailsItem({Key? key}) : super(key: key);
+  const DetailsItem({
+    Key? key,
+    required this.title,
+    required this.value,
+  }) : super(key: key);
+
+  final String title;
+  final num value;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Text(
-          'Wind',
-          style: TextStyle(fontSize: 14, color: Palette.black),
+          title,
+          style: const TextStyle(fontSize: 14, color: Palette.black),
         ),
         const SizedBox(height: 5),
         Text(
-          '200',
-          style: TextStyle(
-              fontSize: 24, color: Palette.black, fontWeight: FontWeight.bold),
+          '${value.toInt()}',
+          style: const TextStyle(
+            fontSize: 24,
+            color: Palette.black,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ],
     );
@@ -172,54 +239,98 @@ class DetailsItem extends StatelessWidget {
 }
 
 class Footer extends StatelessWidget {
-  const Footer({Key? key}) : super(key: key);
+  const Footer({Key? key, required this.weathers}) : super(key: key);
+
+  final List<ConsolidatedWeather> weathers;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-          color: Palette.purple,
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(12), topRight: Radius.circular(12))),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        child: Row(
-          children: [
-            FooterItem(),
-          ],
+      decoration: const BoxDecoration(
+        color: Palette.purple,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(30),
+          topRight: Radius.circular(30),
         ),
+      ),
+      child: Column(
+        children: [
+          const SizedBox(height: 20),
+          const Text(
+            'Next days',
+            style: TextStyle(fontSize: 14, color: Colors.white),
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 20, bottom: 40),
+              child: ListView.builder(
+                shrinkWrap: true,
+                scrollDirection: Axis.horizontal,
+                itemCount: weathers.length,
+                itemBuilder: (context, index) {
+                  final currentWeather = weathers[index];
+
+                  return FooterItem(
+                    weather: currentWeather,
+                    isToday: index == 0,
+                    onTap: () {
+                      context
+                          .read<WeatherBloc>()
+                          .add(CurrentWeatherChanged(currentWeather.id));
+                    },
+                  );
+                },
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
 }
 
 class FooterItem extends StatelessWidget {
-  const FooterItem({Key? key}) : super(key: key);
+  const FooterItem({
+    Key? key,
+    required this.weather,
+    required this.onTap,
+    this.isToday = false,
+  }) : super(key: key);
+
+  final ConsolidatedWeather weather;
+  final bool isToday;
+  final Function() onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        color: Palette.purpleLight,
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            FlutterLogo(),
-            const SizedBox(height: 10),
-            Text(
-              '12:00',
-              style: TextStyle(fontSize: 14, color: Colors.white),
-            ),
-            const SizedBox(height: 5),
-            Text(
-              '35C',
-              style: TextStyle(fontSize: 16, color: Colors.white),
-            ),
-          ],
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        constraints: const BoxConstraints(minWidth: 100),
+        margin: const EdgeInsets.symmetric(horizontal: 10),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          color: Palette.purpleLight,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(8),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                '${isToday ? 'Today' : FormatDate.getJustDayOfWeek(weather.applicableDate)}',
+                style: const TextStyle(fontSize: 14, color: Colors.white),
+              ),
+              const SizedBox(height: 10),
+              const FlutterLogo(),
+              const SizedBox(height: 10),
+              Text(
+                '${weather.minTemp.toInt()}°/${weather.maxTemp.toInt()}°',
+                style: const TextStyle(fontSize: 14, color: Colors.white),
+              ),
+            ],
+          ),
         ),
       ),
     );

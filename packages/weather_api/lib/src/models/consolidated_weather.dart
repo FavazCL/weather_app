@@ -28,7 +28,7 @@ enum WeatherState {
 
 @JsonSerializable()
 class ConsolidatedWeather {
-  const ConsolidatedWeather({
+  ConsolidatedWeather({
     required this.id,
     required this.weatherStateName,
     required this.weatherStateAbbr,
@@ -50,9 +50,9 @@ class ConsolidatedWeather {
   final WeatherState weatherStateAbbr;
   final DateTime created;
   final DateTime applicableDate;
-  final double minTemp;
-  final double maxTemp;
-  final double theTemp;
+  double minTemp;
+  double maxTemp;
+  double theTemp;
   final double windSpeed;
   final double windDirection;
   final double airPressure;

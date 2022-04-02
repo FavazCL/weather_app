@@ -5,14 +5,14 @@ part 'weather.g.dart';
 
 @JsonSerializable()
 class Weather {
-  const Weather({
+  Weather({
     required this.consolidatedWeather,
     required this.time,
     required this.title, 
     required this.woeid,
   });
 
-  final List<ConsolidatedWeather> consolidatedWeather;
+  List<ConsolidatedWeather> consolidatedWeather;
   final DateTime time;
   final String title;
   final int woeid;
