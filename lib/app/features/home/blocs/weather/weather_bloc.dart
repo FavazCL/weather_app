@@ -46,11 +46,11 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
   ) async {
     final consolidatedWeather = state.weather!.consolidatedWeather.map((e) {
       e.maxTemp =
-          (state.isCelsius) ? toCelsius(e.maxTemp) : toFahrenheit(e.maxTemp);
+          (!state.isCelsius) ? toCelsius(e.maxTemp) : toFahrenheit(e.maxTemp);
       e.minTemp =
-          (state.isCelsius) ? toCelsius(e.maxTemp) : toFahrenheit(e.maxTemp);
+          (!state.isCelsius) ? toCelsius(e.minTemp) : toFahrenheit(e.minTemp);
       e.theTemp =
-          (state.isCelsius) ? toCelsius(e.maxTemp) : toFahrenheit(e.maxTemp);
+          (!state.isCelsius) ? toCelsius(e.theTemp) : toFahrenheit(e.theTemp);
       return e;
     }).toList();
 

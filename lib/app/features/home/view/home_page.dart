@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lottie/lottie.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:ui_kit/ui_kit.dart';
 import 'package:utils/utils.dart';
 import 'package:weather_api/weather_api.dart' show ConsolidatedWeather;
@@ -34,8 +34,15 @@ class HomePage extends StatelessWidget {
   }
 }
 
-class WeatherView extends StatelessWidget {
+class WeatherView extends StatefulWidget {
   const WeatherView({Key? key}) : super(key: key);
+
+  @override
+  State<WeatherView> createState() => _WeatherViewState();
+}
+
+class _WeatherViewState extends State<WeatherView> {
+  final RefreshController _refreshController = RefreshController();
 
   @override
   Widget build(BuildContext context) {
@@ -43,70 +50,78 @@ class WeatherView extends StatelessWidget {
       backgroundColor: Palette.background,
       body: BlocBuilder<WeatherBloc, WeatherState>(
         builder: (context, state) {
-          return Stack(
-            children: [
-              if (state.status == WeatherStatus.success ||
-                  state.weather != null)
-                SafeArea(
-                  bottom: false,
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 5,
-                          horizontal: 10,
-                        ),
-                        child: Row(
-                          children: [
-                            const Flexible(child: InputSearch()),
-                            const SizedBox(width: 10),
-                            ContainerBase(
-                              child: IconButton(
-                                onPressed: () {
-                                  context
-                                      .read<WeatherBloc>()
-                                      .add(const UnitChanged());
-                                },
-                                icon: Image.asset(
-                                  state.isCelsius
-                                      ? 'assets/images/celsius.png'
-                                      : 'assets/images/farenheit.png',
-                                  package: 'ui_kit',
-                                ),
-                              ),
+          return SafeArea(
+            bottom: false,
+            child: SmartRefresher(
+              controller: _refreshController,
+              onRefresh: () {
+                final location = context.read<SearchCubit>().state.location;
+                context.read<WeatherBloc>().add(WeatherRequested(location));
+              },
+              child: Stack(
+                children: [
+                  if (state.status == WeatherStatus.success ||
+                      state.weather != null)
+                    SafeArea(
+                      bottom: false,
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 5,
+                              horizontal: 10,
                             ),
-                          ],
-                        ),
+                            child: Row(
+                              children: [
+                                const Flexible(child: InputSearch()),
+                                const SizedBox(width: 10),
+                                ContainerBase(
+                                  child: IconButton(
+                                    onPressed: () {
+                                      context
+                                          .read<WeatherBloc>()
+                                          .add(const UnitChanged());
+                                    },
+                                    icon: Image.asset(
+                                      state.isCelsius
+                                          ? 'assets/images/celsius.png'
+                                          : 'assets/images/farenheit.png',
+                                      package: 'ui_kit',
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          Header(
+                            date: state.currentConsolidated!.applicableDate,
+                            location: state.weather!.title,
+                            temperature: state.currentConsolidated!.theTemp,
+                            isCelsius: state.isCelsius,
+                          ),
+                          AnimatedSwitcher(
+                            duration: const Duration(milliseconds: 300),
+                            child: Details(
+                              key: ValueKey(state.currentConsolidated!.id),
+                              consolidatedWeather: state.currentConsolidated!,
+                            ),
+                          ),
+                          const SizedBox(height: 40),
+                          Expanded(
+                            flex: 2,
+                            child: Footer(
+                              weathers: state.weather!.consolidatedWeather,
+                            ),
+                          ),
+                        ],
                       ),
-                      const SizedBox(height: 20),
-                      Header(
-                        date: state.currentConsolidated!.applicableDate,
-                        location: state.weather!.title,
-                        temperature: state.currentConsolidated!.theTemp,
-                        isCelsius: state.isCelsius,
-                      ),
-                      AnimatedSwitcher(
-                        duration: const Duration(milliseconds: 300),
-                        child: Details(
-                          key: ValueKey(state.currentConsolidated!.id),
-                          consolidatedWeather: state.currentConsolidated!,
-                        ),
-                      ),
-                      const SizedBox(height: 40),
-                      Expanded(
-                        flex: 2,
-                        child: Footer(
-                          weathers: state.weather!.consolidatedWeather,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              if (state.status == WeatherStatus.failure)
-                const Failure(),
-              if (state.status == WeatherStatus.loading)
-                const Loading()
-            ],
+                    ),
+                  if (state.status == WeatherStatus.failure) const Failure(),
+                  if (state.status == WeatherStatus.loading) const Loading()
+                ],
+              ),
+            ),
           );
         },
       ),
@@ -170,7 +185,9 @@ class Details extends StatelessWidget {
     return Column(
       children: [
         const SizedBox(height: 40),
-        const FlutterLogo(size: 200),
+        WeatherStateImage(
+          state: consolidatedWeather.weatherStateName.toLowerCase(),
+        ),
         const SizedBox(height: 40),
         Text(
           consolidatedWeather.weatherStateName,
