@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
 import 'package:ui_kit/ui_kit.dart';
+import 'package:utils/utils.dart';
 import 'package:weather_app/app/features/general_widgets/text_input_search.dart';
 import 'package:weather_app/app/features/home/blocs/weather/weather_bloc.dart';
 import 'package:weather_app/app/features/home/cubits/search/search_cubit.dart';
@@ -27,10 +28,12 @@ class FailureViewPortrait extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final responsive = Responsive.of(context);
+
     return BlocBuilder<SearchCubit, SearchState>(
       builder: (context, state) {
         return Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding: EdgeInsets.symmetric(horizontal: responsive.wp(4)),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
           ),
@@ -39,18 +42,18 @@ class FailureViewPortrait extends StatelessWidget {
             children: [
               LottieBuilder.asset(
                 'assets/animations/empty.json',
-                package: 'ui_kit',
+                package: PackageName.uiKit,
               ),
-              const SizedBox(height: 20),
-              const Text(
+              SizedBox(height: responsive.hp(4)),
+              Text(
                 'Location not found, try again.',
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: responsive.dp(2),
                   color: Palette.black,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(height: 20),
+              SizedBox(height: responsive.hp(4)),
               TextInputSearch(
                 onChanged: (value) {
                   context.read<SearchCubit>().changeLocation(value);
@@ -61,7 +64,7 @@ class FailureViewPortrait extends StatelessWidget {
                       .add(WeatherRequested(state.location));
                 },
               ),
-              const SizedBox(height: 20),
+              SizedBox(height: responsive.hp(4)),
             ],
           ),
         );
@@ -77,35 +80,37 @@ class FailureViewLandscape extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<SearchCubit, SearchState>(
       builder: (context, state) {
+        final responsive = Responsive.of(context);
+
         return Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding: EdgeInsets.symmetric(horizontal: responsive.wp(4)),
           child: Row(
             children: [
               Expanded(
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     LottieBuilder.asset(
                       'assets/animations/empty.json',
-                      package: 'ui_kit',
+                      package: PackageName.uiKit,
                     ),
-                    
                   ],
                 ),
               ),
-              const SizedBox(width: 20),
+              SizedBox(width: responsive.wp(4)),
               Expanded(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text(
+                    Text(
                       'Location not found, try again.',
                       style: TextStyle(
-                        fontSize: 18,
+                        fontSize: responsive.dp(2),
                         color: Palette.black,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(height: 20),
+                    SizedBox(height: responsive.hp(4)),
                     TextInputSearch(
                       onChanged: (value) {
                         context.read<SearchCubit>().changeLocation(value);
