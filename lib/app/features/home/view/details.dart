@@ -27,22 +27,25 @@ class DetailsPortrait extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final responsive = Responsive.of(context);
+
     return Column(
       children: [
-        const SizedBox(height: 40),
+        SizedBox(height: responsive.hp(3)),
         WeatherStateImage(
           state: consolidatedWeather.weatherStateName.toLowerCase(),
+          height: responsive.hp(20),
         ),
-        const SizedBox(height: 40),
+        SizedBox(height: responsive.hp(3)),
         Text(
           consolidatedWeather.weatherStateName,
-          style: const TextStyle(
-            fontSize: 40,
+          style: TextStyle(
+            fontSize: responsive.dp(3),
             color: Palette.black,
             fontWeight: FontWeight.bold,
           ),
         ),
-        const SizedBox(height: 40),
+        SizedBox(height: responsive.hp(3)),
         IntrinsicHeight(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -83,54 +86,58 @@ class DetailsLandscape extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        Column(
-          children: [
-            WeatherStateImage(
-              state: consolidatedWeather.weatherStateName.toLowerCase(),
-            ),
-            const SizedBox(height: 20),
-            Text(
-              consolidatedWeather.weatherStateName,
-              style: const TextStyle(
-                fontSize: 40,
-                color: Palette.black,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(width: 40),
-        IntrinsicWidth(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    final responsive = Responsive.of(context);
+
+    return  Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              DetailsItem(
-                title: 'Humidity',
-                value: consolidatedWeather.humidity,
+              WeatherStateImage(
+                state: consolidatedWeather.weatherStateName.toLowerCase(),
+                height: responsive.hp(20),
               ),
-              Divider(
-                color: Palette.black.withOpacity(0.2),
-                thickness: 1,
-              ),
-              DetailsItem(
-                title: 'Pressure',
-                value: consolidatedWeather.airPressure,
-              ),
-              Divider(
-                color: Palette.black.withOpacity(0.2),
-                thickness: 1,
-              ),
-              DetailsItem(
-                title: 'Wind',
-                value: consolidatedWeather.windSpeed,
+              SizedBox(height: responsive.hp(3)),
+              Text(
+                consolidatedWeather.weatherStateName,
+                style: TextStyle(
+                  fontSize: responsive.dp(3),
+                  color: Palette.black,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ],
           ),
-        )
-      ],
+          SizedBox(width: responsive.wp(4)),
+          IntrinsicWidth(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                DetailsItem(
+                  title: 'Humidity',
+                  value: consolidatedWeather.humidity,
+                ),
+                Divider(
+                  color: Palette.black.withOpacity(0.2),
+                  thickness: 1,
+                ),
+                DetailsItem(
+                  title: 'Pressure',
+                  value: consolidatedWeather.airPressure,
+                ),
+                Divider(
+                  color: Palette.black.withOpacity(0.2),
+                  thickness: 1,
+                ),
+                DetailsItem(
+                  title: 'Wind',
+                  value: consolidatedWeather.windSpeed,
+                ),
+              ],
+            ),
+          )
+        ],
     );
   }
 }

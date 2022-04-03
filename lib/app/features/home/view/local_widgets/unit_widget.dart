@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ui_kit/ui_kit.dart';
+import 'package:utils/utils.dart';
 
 class UnitWidget extends StatelessWidget {
   const UnitWidget({
@@ -20,7 +21,7 @@ class UnitWidget extends StatelessWidget {
           isCelsius
               ? 'assets/images/celsius.png'
               : 'assets/images/farenheit.png',
-          package: 'ui_kit',
+          package: PackageName.uiKit,
         ),
       ),
     );

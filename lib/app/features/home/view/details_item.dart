@@ -13,17 +13,19 @@ class DetailsItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final responsive = Responsive.of(context);
+
     return Column(
       children: [
         Text(
           title,
-          style: const TextStyle(fontSize: 14, color: Palette.black),
+          style: TextStyle(fontSize: responsive.dp(1.6), color: Palette.black),
         ),
-        const SizedBox(height: 5),
+        SizedBox(height: responsive.hp(1)),
         Text(
           '${value.toInt()}',
-          style: const TextStyle(
-            fontSize: 24,
+          style: TextStyle(
+            fontSize: responsive.dp(2.4),
             color: Palette.black,
             fontWeight: FontWeight.bold,
           ),

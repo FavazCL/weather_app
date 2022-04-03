@@ -12,6 +12,8 @@ class HomeFooter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final responsive = Responsive.of(context);
+
     return Container(
       decoration: const BoxDecoration(
         color: Palette.purple,
@@ -22,14 +24,14 @@ class HomeFooter extends StatelessWidget {
       ),
       child: Column(
         children: [
-          const SizedBox(height: 20),
-          const Text(
-            'Next days',
-            style: TextStyle(fontSize: 14, color: Colors.white),
+          SizedBox(height: responsive.hp(2)),
+          Text(
+            'Forecast for the next few days',
+            style: TextStyle(fontSize: responsive.dp(1.6), color: Colors.white),
           ),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.only(top: 20, bottom: 40),
+              padding: EdgeInsets.symmetric(vertical: responsive.hp(2)),
               child: ListView.builder(
                 shrinkWrap: true,
                 scrollDirection: Axis.horizontal,

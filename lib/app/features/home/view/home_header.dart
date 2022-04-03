@@ -52,26 +52,28 @@ class HomeHeaderPortrait extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final responsive = Responsive.of(context);
+
     return Column(
       children: [
         Text(
           FormatDate.getDayOfWeek(date),
-          style: const TextStyle(fontSize: 16, color: Palette.grey),
+          style: TextStyle(fontSize: responsive.dp(1.6), color: Palette.grey),
         ),
-        const SizedBox(height: 5),
+        SizedBox(height: responsive.hp(1)),
         Text(
           location,
-          style: const TextStyle(
-            fontSize: 18,
+          style: TextStyle(
+            fontSize: responsive.dp(1.8),
             color: Palette.black,
             fontWeight: FontWeight.bold,
           ),
         ),
-        const SizedBox(height: 5),
+        SizedBox(height: responsive.hp(1)),
         Text(
           '${temperature.toInt()} ${isCelsius ? '°C' : '°F'}',
-          style: const TextStyle(
-            fontSize: 24,
+          style: TextStyle(
+            fontSize: responsive.dp(3),
             color: Palette.black,
             fontWeight: FontWeight.bold,
           ),
@@ -97,8 +99,10 @@ class HomeHeaderLandscape extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final responsive = Responsive.of(context);
+
     return Padding(
-      padding: const EdgeInsets.only(bottom: 10),
+      padding: EdgeInsets.only(bottom: responsive.hp(2)),
       child: Column(
         children: [
           Row(
@@ -106,24 +110,27 @@ class HomeHeaderLandscape extends StatelessWidget {
             children: [
               Text(
                 FormatDate.getDayOfWeek(date),
-                style: const TextStyle(fontSize: 16, color: Palette.grey),
+                style: TextStyle(
+                  fontSize: responsive.dp(1.6),
+                  color: Palette.grey,
+                ),
               ),
-              const SizedBox(width: 10),
+              SizedBox(width: responsive.wp(2)),
               Text(
                 location,
-                style: const TextStyle(
-                  fontSize: 18,
+                style: TextStyle(
+                  fontSize: responsive.dp(1.8),
                   color: Palette.black,
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 10),
+          SizedBox(height: responsive.hp(2)),
           Text(
             '${temperature.toInt()} ${isCelsius ? '°C' : '°F'}',
-            style: const TextStyle(
-              fontSize: 24,
+            style: TextStyle(
+              fontSize: responsive.dp(3),
               color: Palette.black,
               fontWeight: FontWeight.bold,
             ),

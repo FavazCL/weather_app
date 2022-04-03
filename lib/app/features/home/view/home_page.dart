@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:ui_kit/ui_kit.dart';
-import 'package:weather_api/weather_api.dart' show ConsolidatedWeather;
 import 'package:weather_app/app/features/general_widgets/loading.dart';
 import 'package:weather_app/app/features/home/blocs/weather/weather_bloc.dart';
 import 'package:weather_app/app/features/home/cubits/search/search_cubit.dart';
@@ -12,7 +11,6 @@ import 'package:weather_app/app/features/home/view/home_header.dart';
 import 'package:weather_app/app/features/home/view/input_search.dart';
 import 'package:weather_app/app/features/home/view/local_widgets/failure_page.dart';
 import 'package:weather_app/app/features/home/view/local_widgets/unit_widget.dart';
-import 'package:weather_app/app/features/home/view/weather_item.dart';
 import 'package:weather_repository/weather_repository.dart';
 
 class HomePage extends StatelessWidget {
@@ -57,6 +55,8 @@ class _HomeViewPortraitState extends State<HomeViewPortrait> {
 
   @override
   Widget build(BuildContext context) {
+    final responsive = Responsive.of(context);
+
     return BlocBuilder<WeatherBloc, WeatherState>(
       builder: (context, state) {
         return SafeArea(
@@ -77,14 +77,14 @@ class _HomeViewPortraitState extends State<HomeViewPortrait> {
                     child: Column(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 5,
-                            horizontal: 10,
+                          padding: EdgeInsets.symmetric(
+                            vertical: responsive.hp(1),
+                            horizontal: responsive.wp(2),
                           ),
                           child: Row(
                             children: [
                               const Flexible(child: InputSearch()),
-                              const SizedBox(width: 10),
+                              SizedBox(width: responsive.wp(2)),
                               UnitWidget(
                                 isCelsius: state.isCelsius,
                                 onPressed: () {
@@ -96,7 +96,7 @@ class _HomeViewPortraitState extends State<HomeViewPortrait> {
                             ],
                           ),
                         ),
-                        const SizedBox(height: 20),
+                        SizedBox(height: responsive.hp(2)),
                         HomeHeader(
                           date: state.currentConsolidated!.applicableDate,
                           location: state.weather!.title,
@@ -110,7 +110,7 @@ class _HomeViewPortraitState extends State<HomeViewPortrait> {
                             consolidatedWeather: state.currentConsolidated!,
                           ),
                         ),
-                        const SizedBox(height: 40),
+                        SizedBox(height: responsive.hp(2)),
                         Expanded(
                           flex: 2,
                           child: HomeFooter(
@@ -143,6 +143,8 @@ class _HomeViewLandscapeState extends State<HomeViewLandscape> {
 
   @override
   Widget build(BuildContext context) {
+    final responsive = Responsive.of(context);
+
     return BlocBuilder<WeatherBloc, WeatherState>(
       builder: (context, state) {
         return SafeArea(
@@ -162,14 +164,14 @@ class _HomeViewLandscapeState extends State<HomeViewLandscape> {
                     child: Column(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 10,
-                            horizontal: 5,
+                          padding: EdgeInsets.symmetric(
+                            vertical: responsive.hp(2),
+                            horizontal: responsive.wp(2),
                           ),
                           child: Row(
                             children: [
                               const Flexible(child: InputSearch()),
-                              const SizedBox(width: 10),
+                              SizedBox(width: responsive.wp(1)),
                               UnitWidget(
                                 isCelsius: state.isCelsius,
                                 onPressed: () {
@@ -184,9 +186,11 @@ class _HomeViewLandscapeState extends State<HomeViewLandscape> {
                         Expanded(
                           child: Row(
                             children: [
+                              SizedBox(width: responsive.wp(4)),
                               Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  const SizedBox(height: 10),
+                                  SizedBox(height: responsive.hp(1)),
                                   AnimatedSwitcher(
                                     duration: const Duration(milliseconds: 300),
                                     child: Details(
@@ -199,7 +203,7 @@ class _HomeViewLandscapeState extends State<HomeViewLandscape> {
                                   ),
                                 ],
                               ),
-                              const SizedBox(width: 40),
+                              SizedBox(width: responsive.wp(4)),
                               Expanded(
                                 child: Column(
                                   children: [
