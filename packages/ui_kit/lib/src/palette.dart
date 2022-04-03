@@ -6,4 +6,5 @@ class Palette {
   static const black = Color(0xff334576);
   static const purple = Color(0xff5b1bef);
   static const purpleLight = Color(0xff652ef3);
+  static const backgroundOnboarding = Color(0xffebf3ff);
 }

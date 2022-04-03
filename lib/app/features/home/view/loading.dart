@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:ui_kit/ui_kit.dart';
 
 class Loading extends StatelessWidget {
   const Loading({Key? key}) : super(key: key);
@@ -9,9 +10,9 @@ class Loading extends StatelessWidget {
     return Center(
       child: Stack(
         children: [
-          Container(
-            color: Colors.black.withOpacity(0.2),
-          ),
+          // Container(
+          //   color: Palette.purpleLight.withOpacity(0.2),
+          // ),
           Center(
             child: LottieBuilder.asset(
               'assets/animations/loading.json',

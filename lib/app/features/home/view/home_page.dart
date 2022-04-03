@@ -12,7 +12,9 @@ import 'package:weather_app/app/features/home/view/loading.dart';
 import 'package:weather_repository/weather_repository.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({Key? key, required this.location}) : super(key: key);
+
+  final String location;
 
   @override
   Widget build(BuildContext context) {

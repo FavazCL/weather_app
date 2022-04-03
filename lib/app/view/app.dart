@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:weather_app/app/features/home/view/home_page.dart';
+import 'package:weather_app/app/features/onboarding/view/onboarding_page.dart';
 import 'package:weather_app/l10n/l10n.dart';
 import 'package:weather_repository/weather_repository.dart';
 
@@ -35,7 +35,7 @@ class AppView extends StatelessWidget {
         GlobalMaterialLocalizations.delegate,
       ],
       supportedLocales: AppLocalizations.supportedLocales,
-      home: const HomePage(),
+      home: const OnboardingPage(),
     );
   }
 }
