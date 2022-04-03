@@ -11,6 +11,6 @@ class SearchCubit extends Cubit<SearchState> {
   }
 
   void changeLocation(String value) {
-    emit(state.copyWith(location: value));
+    emit(state.copyWith(location: value.trim()));
   }
 }

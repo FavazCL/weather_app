@@ -192,25 +192,9 @@ class _HomeViewLandscapeState extends State<HomeViewLandscape> {
                           child: Row(
                             children: [
                               SizedBox(width: responsive.wp(4)),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  SizedBox(height: responsive.hp(1)),
-                                  AnimatedSwitcher(
-                                    duration: const Duration(milliseconds: 300),
-                                    child: Details(
-                                      key: ValueKey(
-                                        state.currentConsolidated!.id,
-                                      ),
-                                      consolidatedWeather:
-                                          state.currentConsolidated!,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(width: responsive.wp(4)),
                               Expanded(
                                 child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     HomeHeader(
                                       date: state
@@ -220,14 +204,34 @@ class _HomeViewLandscapeState extends State<HomeViewLandscape> {
                                           state.currentConsolidated!.theTemp,
                                       isCelsius: state.isCelsius,
                                     ),
-                                    Expanded(
-                                      flex: 2,
-                                      child: HomeFooter(
-                                        weathers:
-                                            state.weather!.consolidatedWeather,
+                                    SizedBox(height: responsive.hp(1)),
+                                    AnimatedSwitcher(
+                                      duration: const Duration(
+                                        milliseconds: 300,
+                                      ),
+                                      child: Details(
+                                        key: ValueKey(
+                                          state.currentConsolidated!.id,
+                                        ),
+                                        consolidatedWeather:
+                                            state.currentConsolidated!,
                                       ),
                                     ),
                                   ],
+                                ),
+                              ),
+                              SizedBox(width: responsive.wp(4)),
+                              Expanded(
+                                flex: 2,
+                                child: Padding(
+                                  padding: EdgeInsets.only(
+                                    top: responsive.hp(2),
+                                    right: responsive.wp(2),
+                                  ),
+                                  child: HomeFooter(
+                                    weathers:
+                                        state.weather!.consolidatedWeather,
+                                  ),
                                 ),
                               ),
                             ],
