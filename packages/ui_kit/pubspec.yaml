@@ -19,3 +19,9 @@ flutter:
   assets:
     - assets/images/
     - assets/animations/
+  
+  fonts:
+    - family: Roboto
+      fonts:
+        - asset: assets/fonts/Roboto-Bold.ttf
+        - asset: assets/fonts/Roboto-Regular.ttf

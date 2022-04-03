@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:ui_kit/ui_kit.dart';
 import 'package:weather_app/app/features/home/view/home_page.dart';
@@ -53,7 +52,18 @@ class _OnboardingFooterState extends State<OnboardingFooter> {
                 onChanged: (value) {},
                 textCapitalization: TextCapitalization.sentences,
                 onEditingComplete: () {},
-                onFieldSubmitted: (value) {},
+                onFieldSubmitted: (_) {
+                  if (textEditingController.text.isNotEmpty) {
+                    Navigator.push<HomePage>(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => HomePage(
+                          location: textEditingController.text,
+                        ),
+                      ),
+                    );
+                  }
+                },
                 decoration: InputDecoration(
                   filled: true,
                   isCollapsed: true,
@@ -74,19 +84,19 @@ class _OnboardingFooterState extends State<OnboardingFooter> {
                     icon: const Icon(Icons.search),
                   ),
                   contentPadding: const EdgeInsets.only(left: 10),
-                  hintText: 'Enter a location',
+                  hintText: 'Berlin',
                   border: OutlineInputBorder(
                     borderSide: const BorderSide(
-                      color: Colors.red,
+                      color: Palette.background,
                     ),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   enabledBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(color: Colors.green),
+                    borderSide: const BorderSide(color: Palette.purple),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(color: Colors.purple),
+                    borderSide: const BorderSide(color: Palette.background),
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),

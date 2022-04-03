@@ -36,9 +36,12 @@ class WeatherItem extends StatelessWidget {
                 '${isToday ? 'Today' : FormatDate.getJustDayOfWeek(weather.applicableDate)}',
                 style: const TextStyle(fontSize: 14, color: Colors.white),
               ),
-              const SizedBox(height: 10),
-              const FlutterLogo(),
-              const SizedBox(height: 10),
+              const SizedBox(height: 15),
+              WeatherStateImage(
+                height: 50,
+                state: weather.weatherStateName.toLowerCase(),
+              ),
+              const SizedBox(height: 15),
               Text(
                 '${weather.minTemp.toInt()}°/${weather.maxTemp.toInt()}°',
                 style: const TextStyle(fontSize: 14, color: Colors.white),

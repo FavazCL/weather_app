@@ -35,11 +35,13 @@ class FailureViewPortrait extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
           ),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               LottieBuilder.asset(
                 'assets/animations/empty.json',
                 package: 'ui_kit',
               ),
+              const SizedBox(height: 20),
               const Text(
                 'Location not found, try again.',
                 style: TextStyle(
@@ -58,7 +60,8 @@ class FailureViewPortrait extends StatelessWidget {
                       .read<WeatherBloc>()
                       .add(WeatherRequested(state.location));
                 },
-              )
+              ),
+              const SizedBox(height: 20),
             ],
           ),
         );

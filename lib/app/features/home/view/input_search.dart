@@ -38,6 +38,8 @@ class _InputSearchState extends State<InputSearch>
 
   @override
   Widget build(BuildContext context) {
+    FocusScopeNode currentFocus = FocusScope.of(context);
+    
     return BlocBuilder<SearchCubit, SearchState>(
       builder: (context, state) {
         return Row(
@@ -69,7 +71,16 @@ class _InputSearchState extends State<InputSearch>
                   },
                   textCapitalization: TextCapitalization.sentences,
                   onEditingComplete: () {},
-                  onFieldSubmitted: (value) {},
+                  onFieldSubmitted: (_) {
+                    context
+                        .read<WeatherBloc>()
+                        .add(WeatherRequested(state.location));
+
+                    context.read<SearchCubit>().toggleSearch();
+                    animationController.reverse();
+                    textEditingController = TextEditingController();
+                    currentFocus.unfocus();
+                  },
                   decoration: InputDecoration(
                     filled: true,
                     isCollapsed: true,
@@ -79,27 +90,28 @@ class _InputSearchState extends State<InputSearch>
                         context
                             .read<WeatherBloc>()
                             .add(WeatherRequested(state.location));
-                        
+
                         context.read<SearchCubit>().toggleSearch();
                         animationController.reverse();
                         textEditingController = TextEditingController();
+                        currentFocus.unfocus();
                       },
                       icon: const Icon(Icons.search),
                     ),
                     contentPadding: const EdgeInsets.only(left: 10),
-                    hintText: 'Enter a location',
+                    hintText: 'Berlin',
                     border: OutlineInputBorder(
                       borderSide: const BorderSide(
-                        color: Colors.red,
+                        color: Palette.background,
                       ),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     enabledBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.green),
+                      borderSide: const BorderSide(color: Palette.purpleLight),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.purple),
+                      borderSide: const BorderSide(color: Palette.background),
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
