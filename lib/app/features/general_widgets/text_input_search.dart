@@ -28,7 +28,7 @@ class TextInputSearch extends StatelessWidget {
           icon: const Icon(Icons.search),
         ),
         contentPadding: const EdgeInsets.only(left: 10),
-        hintText: 'Berlin',
+        hintText: 'Enter a location, example: Berlin',
         border: OutlineInputBorder(
           borderSide: const BorderSide(
             color: Palette.background,

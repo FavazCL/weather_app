@@ -14,9 +14,14 @@ class OnboardingPage extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Palette.backgroundOnboarding,
-      body: responsive.isPortrait
-          ? const OnboadingViewPortrait()
-          : const OnboadingViewLandscape(),
+      body: SingleChildScrollView(
+        child: SizedBox(
+          height: responsive.height,
+          child: responsive.isPortrait
+              ? const OnboadingViewPortrait()
+              : const OnboadingViewLandscape(),
+        ),
+      ),
     );
   }
 }

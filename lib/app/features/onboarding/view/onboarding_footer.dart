@@ -61,7 +61,7 @@ class _OnboardingFooterState extends State<OnboardingFooter> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => HomePage(
-                          location: textEditingController.text,
+                          location: textEditingController.text.trim(),
                         ),
                       ),
                     );
@@ -87,7 +87,7 @@ class _OnboardingFooterState extends State<OnboardingFooter> {
                     icon: const Icon(Icons.search),
                   ),
                   contentPadding: EdgeInsets.only(left: responsive.wp(4)),
-                  hintText: 'Berlin',
+                  hintText: 'Enter a location, example: Berlin',
                   border: OutlineInputBorder(
                     borderSide: const BorderSide(
                       color: Palette.background,
