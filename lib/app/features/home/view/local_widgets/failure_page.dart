@@ -29,6 +29,7 @@ class FailureViewPortrait extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final responsive = Responsive.of(context);
+    final currentFocus = FocusScope.of(context);
 
     return BlocBuilder<SearchCubit, SearchState>(
       builder: (context, state) {
@@ -62,6 +63,7 @@ class FailureViewPortrait extends StatelessWidget {
                   context
                       .read<WeatherBloc>()
                       .add(WeatherRequested(state.location));
+                  currentFocus.unfocus();
                 },
               ),
               SizedBox(height: responsive.hp(4)),
@@ -81,6 +83,7 @@ class FailureViewLandscape extends StatelessWidget {
     return BlocBuilder<SearchCubit, SearchState>(
       builder: (context, state) {
         final responsive = Responsive.of(context);
+        final currentFocus = FocusScope.of(context);
 
         return Container(
           padding: EdgeInsets.symmetric(horizontal: responsive.wp(4)),
@@ -119,6 +122,7 @@ class FailureViewLandscape extends StatelessWidget {
                         context
                             .read<WeatherBloc>()
                             .add(WeatherRequested(state.location));
+                        currentFocus.unfocus();
                       },
                     ),
                   ],

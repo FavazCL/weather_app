@@ -38,7 +38,7 @@ class _InputSearchState extends State<InputSearch>
 
   @override
   Widget build(BuildContext context) {
-    FocusScopeNode currentFocus = FocusScope.of(context);
+    final currentFocus = FocusScope.of(context);
     
     return BlocBuilder<SearchCubit, SearchState>(
       builder: (context, state) {

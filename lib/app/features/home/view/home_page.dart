@@ -35,9 +35,14 @@ class HomePage extends StatelessWidget {
       ],
       child: Scaffold(
         backgroundColor: Palette.background,
-        body: responsive.isPortrait
-            ? const HomeViewPortrait()
-            : const HomeViewLandscape(),
+        body: SingleChildScrollView(
+          child: SizedBox(
+            height: responsive.height,
+            child: responsive.isPortrait
+                ? const HomeViewPortrait()
+                : const HomeViewLandscape(),
+          ),
+        ),
       ),
     );
   }
