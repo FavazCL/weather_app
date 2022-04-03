@@ -32,7 +32,7 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
           status: WeatherStatus.success,
           weather: response,
           currentConsolidated: response.consolidatedWeather.first,
-          isCelsius: false,
+          isCelsius: true,
         ),
       );
     } catch (e) {
