@@ -2,32 +2,58 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'consolidated_weather.g.dart';
 
+/// Enums to describe the weather states
 enum WeatherState {
   @JsonValue('sn')
+
+  /// sn means Snow state
   snow,
   @JsonValue('sl')
+
+  /// sl means Sleet state
   sleet,
   @JsonValue('h')
+
+  /// h means Hail state
   hail,
   @JsonValue('t')
+
+  /// t means Thunderstorm state
   thunderstorm,
   @JsonValue('hr')
+
+  /// hr means HeavyRain state
   heavyRain,
   @JsonValue('lr')
+
+  /// lr means LightRain state
   lightRain,
   @JsonValue('s')
+
+  /// s means Showers state
   showers,
   @JsonValue('hc')
+
+  /// hc means HeavyCloud state
   heavyCloud,
   @JsonValue('lc')
+
+  /// lc means LightCloud state
   lightCloud,
   @JsonValue('c')
+
+  /// c means Clear
   clear,
+
+  /// Unmarked when state is unkown
   unmarked,
 }
 
 @JsonSerializable()
+
+/// Class for Consolidated Weather
 class ConsolidatedWeather {
+  /// Constructor of the class
   ConsolidatedWeather({
     required this.id,
     required this.weatherStateName,
@@ -45,21 +71,49 @@ class ConsolidatedWeather {
     required this.predictability,
   });
 
-  final int id;
-  final String weatherStateName;
-  final WeatherState weatherStateAbbr;
-  final DateTime created;
-  final DateTime applicableDate;
-  double minTemp;
-  double maxTemp;
-  double theTemp;
-  final double windSpeed;
-  final double windDirection;
-  final double airPressure;
-  final int humidity;
-  final double visibility;
-  final int predictability;
-
+  /// Function to parse from json to [ConsolidatedWeather] class
   factory ConsolidatedWeather.fromJson(Map<String, dynamic> json) =>
       _$ConsolidatedWeatherFromJson(json);
+
+  /// Identifier of consolidated weather
+  final int id;
+
+  /// Name of the weather state
+  final String weatherStateName;
+
+  /// Abbreviation of weather state
+  final WeatherState weatherStateAbbr;
+
+  /// Date when this object was created.
+  final DateTime created;
+
+  /// Date that specify the real date for specific weather.
+  final DateTime applicableDate;
+
+  /// Min temperature
+  double minTemp;
+
+  /// Max temperature
+  double maxTemp;
+
+  /// Current temperature
+  double theTemp;
+
+  /// Speed of wind
+  final double windSpeed;
+
+  /// Direction of wind
+  final double windDirection;
+
+  /// Pressure of air
+  final double airPressure;
+
+  /// Current humidity
+  final int humidity;
+
+  /// Current visibility
+  final double visibility;
+
+  /// Current predictability
+  final int predictability;
 }

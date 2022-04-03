@@ -4,9 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:weather_api/src/models/location.dart';
 import 'package:weather_api/src/models/weather.dart';
 
-/// {@template weather_api}
-/// The interface and models for an API providing access to weather.
-/// {@endtemplate}
+/// The interface for an API providing access to weather.
 class WeatherApi {
   /// {@macro weather_api}
   WeatherApi({http.Client? httpClient})
@@ -22,6 +20,7 @@ class WeatherApi {
       '/api/location/search',
       <String, String>{'query': query},
     );
+    
     final locationResponse = await _httpClient.get(locationRequest);
 
     if (locationResponse.statusCode != 200) {
@@ -53,12 +52,6 @@ class WeatherApi {
     if (bodyJson.isEmpty) {
       throw WeatherRequestFailure();
     }
-
-    // final weatherJson = bodyJson['consolidated_weather'] as List;
-
-    // if (weatherJson.isEmpty) {
-      // throw WeatherRequestFailure();
-    // }
 
     return Weather.fromJson(bodyJson);
   }
