@@ -10,9 +10,7 @@ class Loading extends StatelessWidget {
     return Center(
       child: Stack(
         children: [
-          // Container(
-          //   color: Palette.purpleLight.withOpacity(0.2),
-          // ),
+          Container(color: Palette.background),
           Center(
             child: LottieBuilder.asset(
               'assets/animations/loading.json',
