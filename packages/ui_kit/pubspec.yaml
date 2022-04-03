@@ -18,3 +18,4 @@ dev_dependencies:
 flutter:
   assets:
     - assets/images/
+    - assets/animations/

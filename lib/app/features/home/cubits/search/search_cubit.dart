@@ -9,4 +9,8 @@ class SearchCubit extends Cubit<SearchState> {
   Future<void> toggleSearch() async {
     emit(state.copyWith(displaySearch: !state.displaySearch));
   }
+
+  void changeLocation(String value) {
+    emit(state.copyWith(location: value));
+  }
 }

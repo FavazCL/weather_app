@@ -23,11 +23,10 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
     WeatherRequested event,
     Emitter<WeatherState> emit,
   ) async {
-    emit(state.copyWith(status: WeatherStatus.loading));
+    try {
+      emit(state.copyWith(status: WeatherStatus.loading));
+      final response = await _weatherRepository.getWeather(event.location);
 
-    final response = await _weatherRepository.getWeather('london');
-
-    if (response != null) {
       emit(
         state.copyWith(
           status: WeatherStatus.success,
@@ -36,7 +35,7 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
           isCelsius: false,
         ),
       );
-    } else {
+    } catch (e) {
       emit(state.copyWith(status: WeatherStatus.failure));
     }
   }

@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lottie/lottie.dart';
 import 'package:ui_kit/ui_kit.dart';
 import 'package:utils/utils.dart';
 import 'package:weather_api/weather_api.dart' show ConsolidatedWeather;
 import 'package:weather_app/app/features/home/blocs/weather/weather_bloc.dart';
 import 'package:weather_app/app/features/home/cubits/search/search_cubit.dart';
+import 'package:weather_app/app/features/home/view/failure.dart';
 import 'package:weather_app/app/features/home/view/input_search.dart';
+import 'package:weather_app/app/features/home/view/loading.dart';
 import 'package:weather_repository/weather_repository.dart';
 
 class HomePage extends StatelessWidget {
@@ -40,67 +43,71 @@ class WeatherView extends StatelessWidget {
       backgroundColor: Palette.background,
       body: BlocBuilder<WeatherBloc, WeatherState>(
         builder: (context, state) {
-          if (state.status == WeatherStatus.loading) {
-            return Container(height: 100, color: Colors.red);
-          } else if (state.status == WeatherStatus.success) {
-            return SafeArea(
-              bottom: false,
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 5,
-                      horizontal: 10,
-                    ),
-                    child: Row(
-                      children: [
-                        const Flexible(child: InputSearch()),
-                        const SizedBox(width: 10),
-                        ContainerBase(
-                          child: IconButton(
-                            onPressed: () {
-                              context
-                                  .read<WeatherBloc>()
-                                  .add(const UnitChanged());
-                            },
-                            icon: Image.asset(
-                              state.isCelsius
-                                  ? 'assets/images/celsius.png'
-                                  : 'assets/images/farenheit.png',
-                              package: 'ui_kit',
-                            ),
-                          ),
+          return Stack(
+            children: [
+              if (state.status == WeatherStatus.success ||
+                  state.weather != null)
+                SafeArea(
+                  bottom: false,
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 5,
+                          horizontal: 10,
                         ),
-                      ],
-                    ),
+                        child: Row(
+                          children: [
+                            const Flexible(child: InputSearch()),
+                            const SizedBox(width: 10),
+                            ContainerBase(
+                              child: IconButton(
+                                onPressed: () {
+                                  context
+                                      .read<WeatherBloc>()
+                                      .add(const UnitChanged());
+                                },
+                                icon: Image.asset(
+                                  state.isCelsius
+                                      ? 'assets/images/celsius.png'
+                                      : 'assets/images/farenheit.png',
+                                  package: 'ui_kit',
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      Header(
+                        date: state.currentConsolidated!.applicableDate,
+                        location: state.weather!.title,
+                        temperature: state.currentConsolidated!.theTemp,
+                        isCelsius: state.isCelsius,
+                      ),
+                      AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 300),
+                        child: Details(
+                          key: ValueKey(state.currentConsolidated!.id),
+                          consolidatedWeather: state.currentConsolidated!,
+                        ),
+                      ),
+                      const SizedBox(height: 40),
+                      Expanded(
+                        flex: 2,
+                        child: Footer(
+                          weathers: state.weather!.consolidatedWeather,
+                        ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 20),
-                  Header(
-                    date: state.currentConsolidated!.applicableDate,
-                    location: state.weather!.title,
-                    temperature: state.currentConsolidated!.theTemp,
-                    isCelsius: state.isCelsius,
-                  ),
-                  AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 300),
-                    child: Details(
-                      key: ValueKey(state.currentConsolidated!.id),
-                      consolidatedWeather: state.currentConsolidated!,
-                    ),
-                  ),
-                  const SizedBox(height: 40),
-                  Expanded(
-                    flex: 2,
-                    child: Footer(
-                      weathers: state.weather!.consolidatedWeather,
-                    ),
-                  ),
-                ],
-              ),
-            );
-          }
-
-          return Container(height: 100, color: Colors.blue);
+                ),
+              if (state.status == WeatherStatus.failure)
+                const Failure(),
+              if (state.status == WeatherStatus.loading)
+                const Loading()
+            ],
+          );
         },
       ),
     );

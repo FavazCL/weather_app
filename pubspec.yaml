@@ -15,6 +15,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   intl: ^0.17.0
+  lottie: ^1.2.2
   ui_kit:
     path: packages/ui_kit
   utils:
