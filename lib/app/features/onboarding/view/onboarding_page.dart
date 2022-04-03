@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:ui_kit/ui_kit.dart';
+import 'package:utils/utils.dart';
 import 'package:weather_app/app/features/onboarding/view/onboarding_footer.dart';
 import 'package:weather_app/app/features/onboarding/view/onboarding_header.dart';
 
@@ -25,16 +26,18 @@ class OnboadingViewPortrait extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final responsive = Responsive.of(context);
+
     return SafeArea(
       bottom: false,
       child: Column(
         children: [
-          const SizedBox(height: 40),
+          SizedBox(height: responsive.hp(4)),
           const OnboardingHeader(),
-          const SizedBox(height: 40),
+          SizedBox(height: responsive.hp(4)),
           LottieBuilder.asset(
             'assets/animations/weather.json',
-            package: 'ui_kit',
+            package: PackageName.uiKit,
           ),
           const OnboardingFooter(),
         ],
@@ -48,24 +51,28 @@ class OnboadingViewLandscape extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final responsive = Responsive.of(context);
+
     return SafeArea(
       child: Row(
         children: [
           Expanded(
             flex: 2,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const OnboardingHeader(),
-                const SizedBox(height: 40),
-                LottieBuilder.asset(
-                  'assets/animations/weather.json',
-                  package: 'ui_kit',
-                ),
-              ],
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: responsive.wp(2)),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const OnboardingHeader(),
+                  SizedBox(height: responsive.hp(4)),
+                  LottieBuilder.asset(
+                    'assets/animations/weather.json',
+                    package: PackageName.uiKit,
+                  ),
+                ],
+              ),
             ),
           ),
-          const SizedBox(width: 40),
           const OnboardingFooter(),
         ],
       ),

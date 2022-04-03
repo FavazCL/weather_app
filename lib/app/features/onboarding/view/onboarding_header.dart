@@ -6,21 +6,23 @@ class OnboardingHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final responsive = Responsive.of(context);
+
     return Column(
-      children: const [
+      children: [
          Text(
           'Daily',
           style: TextStyle(
-            fontSize: 24,
+            fontSize: responsive.dp(2),
             color: Palette.grey,
             fontWeight: FontWeight.bold,
           ),
         ),
-        SizedBox(height: 10),
+        SizedBox(height: responsive.hp(1)),
         Text(
           'Weather',
           style: TextStyle(
-            fontSize: 28,
+            fontSize: responsive.dp(2.8),
             color: Palette.black,
             fontWeight: FontWeight.bold,
           ),

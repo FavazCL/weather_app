@@ -24,28 +24,31 @@ class _OnboardingFooterState extends State<OnboardingFooter> {
 
   @override
   Widget build(BuildContext context) {
+    final responsive = Responsive.of(context);
+
     return Expanded(
       flex: 3,
       child: Container(
         alignment: Alignment.center,
         color: Palette.purple,
         child: Padding(
-          padding: const EdgeInsets.symmetric(
-            vertical: 10,
-            horizontal: 20,
+          padding: EdgeInsets.symmetric(
+            vertical: responsive.hp(1),
+            horizontal: responsive.wp(4),
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
+              Text(
                 'Enter a location to view its weather',
                 style: TextStyle(
-                  fontSize: 24,
+                  fontSize: responsive.dp(2.8),
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(height: 20),
+              SizedBox(height: responsive.hp(2)),
               TextFormField(
                 controller: textEditingController,
                 textAlignVertical: TextAlignVertical.center,
@@ -83,7 +86,7 @@ class _OnboardingFooterState extends State<OnboardingFooter> {
                     },
                     icon: const Icon(Icons.search),
                   ),
-                  contentPadding: const EdgeInsets.only(left: 10),
+                  contentPadding: EdgeInsets.only(left: responsive.wp(4)),
                   hintText: 'Berlin',
                   border: OutlineInputBorder(
                     borderSide: const BorderSide(
