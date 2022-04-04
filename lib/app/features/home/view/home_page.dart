@@ -191,8 +191,8 @@ class _HomeViewLandscapeState extends State<HomeViewLandscape> {
                         Expanded(
                           child: Row(
                             children: [
-                              SizedBox(width: responsive.wp(4)),
                               Expanded(
+                                flex: 2,
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -220,9 +220,9 @@ class _HomeViewLandscapeState extends State<HomeViewLandscape> {
                                   ],
                                 ),
                               ),
-                              SizedBox(width: responsive.wp(4)),
+                              SizedBox(width: responsive.wp(2)),
                               Expanded(
-                                flex: 2,
+                                flex: 3,
                                 child: Padding(
                                   padding: EdgeInsets.only(
                                     top: responsive.hp(2),

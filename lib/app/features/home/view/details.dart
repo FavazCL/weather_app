@@ -109,7 +109,6 @@ class DetailsLandscape extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(width: responsive.wp(4)),
           IntrinsicWidth(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
