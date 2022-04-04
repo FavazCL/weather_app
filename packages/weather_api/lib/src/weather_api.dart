@@ -4,16 +4,16 @@ import 'package:http/http.dart' as http;
 import 'package:weather_api/src/models/location.dart';
 import 'package:weather_api/src/models/weather.dart';
 
-/// The interface for an API providing access to weather.
+/// The interface for an [WeatherApi]
 class WeatherApi {
-  /// {@macro weather_api}
+  /// Constructor of [WeatherApi] class
   WeatherApi({http.Client? httpClient})
       : _httpClient = httpClient ?? http.Client();
 
   static const _baseUrl = 'www.metaweather.com';
   final http.Client _httpClient;
 
-  /// Finds a [Location] `/api/location/search/?query=(query)`.
+  /// GET a [Location] given a City
   Future<Location> locationSearch(String query) async {
     final locationRequest = Uri.https(
       _baseUrl,
@@ -38,7 +38,7 @@ class WeatherApi {
     return Location.fromJson(locationJson.first as Map<String, dynamic>);
   }
 
-  /// Fetches [Weather] for a given [locationId].
+  /// GET [Weather] given a [locationId].
   Future<Weather> getWeather(int locationId) async {
     final weatherRequest = Uri.https(_baseUrl, '/api/location/$locationId');
     final weatherResponse = await _httpClient.get(weatherRequest);
