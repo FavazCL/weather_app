@@ -64,6 +64,7 @@ $ open coverage/index.html
 [very_good_analysis_link]: https://pub.dev/packages/very_good_analysis
 [very_good_cli_link]: https://github.com/VeryGoodOpenSource/very_good_cli
 ## Architecture 🔥
+![architecture](https://user-images.githubusercontent.com/34754307/161455379-94e543d5-994f-415f-bb72-bf75f49c6f08.png)
 
 ## Results 🎬
 
